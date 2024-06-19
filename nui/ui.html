@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>VAUNT MDT</title>
+    <meta name="viewport" content="width=device-width, initial-scale=0.8">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" type="text/javascript"></script>
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            display: none;
+            font-family: sans-serif;
+            overflow: hidden;
+            max-height: 100vh;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            
+        }
+
+        #iframe {
+            width: 100%;
+            flex: 1;
+            background:ghostwhite;
+            overflow: scroll;
+            border: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        #tab-container {
+            display: flex;
+            flex: 1;
+            top: 20px;
+        }
+
+        .tab {
+            position: relative;
+            min-height:100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .tab-wrap {
+            position: relative;
+            top: 10%;
+            background: black;
+            width: 100%;
+            max-width: 1400px;
+            max-height: 70%;
+            min-height: 70%;
+            margin: 0 auto 0;
+            padding: 30px;
+            border-radius: 30px;
+            transition: transform 0.75s ease, box-shadow 0.75s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .tab-wrap #dot {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            bottom: 8px;
+            border: 1px solid dodgerblue;
+            transition: all 0.5s ease;
+            align-self: center;
+        }
+
+        .tab-wrap #dot:hover {
+            background: whitesmoke;
+        }
+
+        .tab-wrap .tab {
+            padding: 0;
+            overflow:hidden;
+        }
+    </style>
+    
+</head>
+
+<body>
+    <div id="tab-container">
+        <div class="tab-wrap">
+            <span id="dot"></span>
+            <div class="tab">
+                <iframe id="iframe" src="https://mdt.vaunt.ovh" ></iframe>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+            const $body = $("body");
+
+            const SHOW_HIDE = (bool) => {
+                if (bool) {
+                    $body.show();
+                } else {
+                    $body.hide();
+                    window.blur()
+                }
+            }
+
+            SHOW_HIDE(false);
+
+            $('#dot').on('click', () => {
+                SHOW_HIDE();
+                    $.post("http://vauntmdt/vaunt-mdt-bus", JSON.stringify({
+                        hide: true
+                    }))
+            })
+
+            window.addEventListener('message', (event) => {
+                var item = event.data;
+                if (item.showtab) {
+                    SHOW_HIDE(true)
+                }
+                else if (item.hidetab) {
+                    SHOW_HIDE()
+                }
+            });
+
+
+            document.addEventListener('keyup', (data) => {
+                if (data.which == 27) {
+                    SHOW_HIDE();
+                    $.post("http://vauntmdt/vaunt-mdt-bus", JSON.stringify({
+                        hide: true
+                    }))
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
