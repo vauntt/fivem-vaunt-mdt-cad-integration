@@ -16,4 +16,4 @@ Vaunt MDT-CAD Integration is an advanced tool designed to seamlessly connect you
 
 # More info 
 
-[vaunt.ovh](https://vaunt.ovh)
+[vauntcorp.com](https://vauntcorp.com)
