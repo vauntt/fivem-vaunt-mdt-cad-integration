@@ -39,18 +39,26 @@ function startAnim()
 end
 
 function attachObject()
-	if tabletObject ~= nil then
-		-- delete tablet object
-		DeleteObject(tabletObject) 
-	end
-	--create model of tablet 
-	tabletObject = CreateObject(GetHashKey("prop_cs_tablet"), 0, 0, 0, true, true, true) 
+    if tabletObject ~= nil then
+        DeleteObject(tabletObject)
+        tabletObject = nil
+    end
+    local model = GetHashKey("prop_cs_tablet")
+    RequestModel(model)
+    while not HasModelLoaded(model) do
+        Citizen.Wait(0)
+    end
+    tabletObject = CreateObject(model, 0, 0, 0, true, true, true)
     AttachEntityToEntity(tabletObject, GetPlayerPed(-1), GetPedBoneIndex(GetPlayerPed(-1), 57005), 0.17, 0.10, -0.13, 20.0, 180.0, 180.0, true, true, false, true, 1, true)
+    SetModelAsNoLongerNeeded(model)
 end
 
 function stopAnim()
-    StopAnimTask(GetPlayerPed(-1), "amb@world_human_seat_wall_tablet@female@base", "base" ,8.0, -8.0, -1, 50, 0, false, false, false)
-    DeleteEntity(tabletObject)
+    StopAnimTask(GetPlayerPed(-1), "amb@world_human_seat_wall_tablet@female@base", "base", 8.0)
+    if tabletObject ~= nil then
+        DeleteEntity(tabletObject)
+        tabletObject = nil
+    end
 end
 
 Citizen.CreateThread(

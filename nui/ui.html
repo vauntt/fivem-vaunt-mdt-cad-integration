@@ -93,6 +93,8 @@
     </div>
     <script>
         $(document).ready(function () {
+            $.post("http://vauntmdt/vaunt-mdt-bus", JSON.stringify({ load: true }));
+
             const $body = $("body");
 
             const SHOW_HIDE = (bool) => {
