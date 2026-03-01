@@ -1,19 +1,67 @@
 # Vaunt MDT-CAD Integration
 
-Vaunt MDT-CAD Integration is an advanced tool designed to seamlessly connect your FiveM roleplay server with a custom MDT (Mobile Data Terminal) and CAD (Computer-Aided Dispatch) system. This integration enhances roleplay by providing a professional-grade interface for law enforcement, EMS, and dispatchers.
+Affiche un MDT/CAD dans FiveM via une interface NUI (tablet in-game). Appuyez sur **F1** pour ouvrir/fermer, **Echap** ou le point bleu pour fermer.
 
-## Features
-- **Real-time Data Sync**: Effortlessly synchronize player information, vehicle records, and incident reports.
-- **Customizable**: Tailor the MDT-CAD experience to suit your server's unique roleplay needs.
-- **Ease of Use**: User-friendly design for seamless interaction.
-- **Open Source**: Completely free and open-source, enabling you to contribute and adapt the project.
+---
 
 ## Installation
 
-1. **Clone the Repository:**
-   ```bash
-   git clone https://github.com/vauntt/fivem-vaunt-mdt-cad-integration.git
+**1. Télécharger la ressource**
 
-# More info 
+```bash
+git clone https://github.com/vauntt/fivem-vaunt-mdt-cad-integration.git vauntmdt
+```
 
-[vauntcorp.com](https://vauntcorp.com)
+> Le dossier **doit** s'appeler `vauntmdt` (nom utilisé en interne par la ressource).
+
+**2. Placer dans le dossier resources**
+
+```
+server/
+└── resources/
+    └── vauntmdt/
+        ├── client.lua
+        ├── fxmanifest.lua
+        └── nui/
+            └── ui.html
+```
+
+**3. Ajouter dans `server.cfg`**
+
+```
+ensure vauntmdt
+```
+
+**4. Redémarrer le serveur**
+
+---
+
+## Configuration
+
+### Changer la touche d'ouverture
+
+Par défaut : **F1** (control 244). Pour changer, modifiez dans `client.lua` :
+
+```lua
+if (IsControlJustPressed(0, 244)) then  -- 244 = F1
+```
+
+Référence des codes de touches : [FiveM Controls](https://docs.fivem.net/docs/game-references/controls/)
+
+---
+
+## Utilisation
+
+| Action | Touche |
+|--------|--------|
+| Ouvrir / Fermer le MDT | F1 |
+| Fermer le MDT | Echap |
+| Fermer le MDT | Point bleu (bas de la tablette) |
+
+---
+
+## Compatibilité
+
+- FiveM `fx_version cerulean`
+- GTA V (gta5)
+- Testé sur serveurs FiveM modernes (2024+)
