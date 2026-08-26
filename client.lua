@@ -16,7 +16,7 @@ end
 
 RegisterNUICallback(
     "vaunt-mdt-bus",
-    function(data)
+    function(data, callback)
         if data.load then
             tabLoaded = true
         elseif data.hide then
@@ -24,6 +24,8 @@ RegisterNUICallback(
             tabEnabled = false
             stopAnim()
         end
+
+        callback({ ok = true })
     end
 )
 
@@ -60,6 +62,19 @@ function stopAnim()
         tabletObject = nil
     end
 end
+
+AddEventHandler(
+    "onResourceStop",
+    function(resourceName)
+        if GetCurrentResourceName() ~= resourceName then
+            return
+        end
+
+        SetNuiFocus(false, false)
+        tabEnabled = false
+        stopAnim()
+    end
+)
 
 Citizen.CreateThread(
     function()

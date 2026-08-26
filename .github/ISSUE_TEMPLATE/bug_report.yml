@@ -1,0 +1,39 @@
+name: Signaler un bug
+description: Signaler un problème reproductible avec la tablette FiveM
+title: "[Bug]: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: Merci de ne jamais partager de clé, cookie ou donnée provenant d'un serveur réel.
+  - type: input
+    id: version
+    attributes:
+      label: Version de la ressource
+      placeholder: "1.1.0"
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problème rencontré
+      description: Décrivez le résultat observé et le résultat attendu.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Étapes de reproduction
+      placeholder: |
+        1. Démarrer la ressource
+        2. Appuyer sur F1
+        3. Observer...
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs utiles
+      description: Supprimez toute information sensible avant de les joindre.
+      render: shell

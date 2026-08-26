@@ -1,17 +1,17 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>VAUNT MDT</title>
     <meta name="viewport" content="width=device-width, initial-scale=0.8">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" type="text/javascript"></script>
     <style>
         * { box-sizing: border-box; }
 
         body {
             font-family: sans-serif;
+            margin: 0;
             overflow: hidden;
             max-height: 100vh;
             min-height: 100vh;
@@ -65,9 +65,14 @@
             height: 15px;
             border-radius: 50%;
             bottom: 8px;
+            left: 50%;
+            transform: translateX(-50%);
             border: 1px solid dodgerblue;
             transition: all 0.5s ease;
             align-self: center;
+            padding: 0;
+            background: transparent;
+            cursor: pointer;
         }
 
         .tab-wrap #dot:hover {
@@ -85,52 +90,51 @@
 <body>
     <div id="tab-container">
         <div class="tab-wrap">
-            <span id="dot"></span>
+            <button id="dot" type="button" aria-label="Fermer le MDT"></button>
             <div class="tab">
-                <iframe id="iframe" src="https://mdt.vauntcorp.com"></iframe>
+                <iframe id="iframe" src="https://mdt.vauntcorp.com/" title="VAUNTCORP MDT/CAD"></iframe>
             </div>
         </div>
     </div>
     <script>
-        $(document).ready(function () {
-            $.post("http://vauntmdt/vaunt-mdt-bus", JSON.stringify({ load: true }));
+        document.addEventListener('DOMContentLoaded', () => {
+            const body = document.body;
+            const resourceName = typeof GetParentResourceName === 'function'
+                ? GetParentResourceName()
+                : 'vauntmdt';
+            const callbackUrl = `https://${resourceName}/vaunt-mdt-bus`;
 
-            const $body = $("body");
+            const sendNuiMessage = (payload) => fetch(callbackUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json; charset=UTF-8' },
+                body: JSON.stringify(payload)
+            }).catch(() => {});
 
-            const SHOW_HIDE = (bool) => {
-                if (bool) {
-                    $body.show();
-                } else {
-                    $body.hide();
-                    window.blur();
-                }
+            const showTablet = (visible) => {
+                body.style.display = visible ? 'flex' : 'none';
+                if (!visible) window.blur();
             };
 
-            SHOW_HIDE(false);
+            const closeTablet = () => {
+                showTablet(false);
+                sendNuiMessage({ hide: true });
+            };
 
-            $('#dot').on('click', () => {
-                SHOW_HIDE(false);
-                $.post("http://vauntmdt/vaunt-mdt-bus", JSON.stringify({
-                    hide: true
-                }));
-            });
+            showTablet(false);
+            sendNuiMessage({ load: true });
 
-            window.addEventListener('message', (event) => {
-                var item = event.data;
-                if (item.showtab) {
-                    SHOW_HIDE(true);
-                } else if (item.hidetab) {
-                    SHOW_HIDE(false);
+            document.getElementById('dot').addEventListener('click', closeTablet);
+
+            window.addEventListener('message', ({ data }) => {
+                if (data?.showtab) {
+                    showTablet(true);
+                } else if (data?.hidetab) {
+                    showTablet(false);
                 }
             });
 
-            document.addEventListener('keyup', (data) => {
-                if (data.which == 27) {
-                    SHOW_HIDE(false);
-                    $.post("http://vauntmdt/vaunt-mdt-bus", JSON.stringify({
-                        hide: true
-                    }));
-                }
+            document.addEventListener('keyup', ({ key }) => {
+                if (key === 'Escape') closeTablet();
             });
         });
     </script>

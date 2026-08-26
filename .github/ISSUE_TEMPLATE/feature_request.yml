@@ -1,0 +1,26 @@
+name: Proposer une amélioration
+description: Suggérer une amélioration ciblée de la tablette FiveM
+title: "[Feature]: "
+labels:
+  - enhancement
+body:
+  - type: textarea
+    id: need
+    attributes:
+      label: Besoin
+      description: Quel problème cette amélioration résoudrait-elle ?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Solution proposée
+    validations:
+      required: true
+  - type: checkboxes
+    id: scope
+    attributes:
+      label: Périmètre
+      options:
+        - label: Cette demande concerne la tablette client/NUI et non le backend VAUNTCORP MDT.
+          required: true
