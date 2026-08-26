@@ -31,12 +31,13 @@ RegisterNUICallback(
 
 function startAnim()
     Citizen.CreateThread(function()
+        local playerPed = PlayerPedId()
         RequestAnimDict("amb@world_human_seat_wall_tablet@female@base")
         while not HasAnimDictLoaded("amb@world_human_seat_wall_tablet@female@base") do
             Citizen.Wait(0)
         end
         attachObject()
-        TaskPlayAnim(GetPlayerPed(-1), "amb@world_human_seat_wall_tablet@female@base", "base" ,8.0, -8.0, -1, 50, 0, false, false, false)
+        TaskPlayAnim(playerPed, "amb@world_human_seat_wall_tablet@female@base", "base" ,8.0, -8.0, -1, 50, 0, false, false, false)
     end)
 end
 
@@ -46,17 +47,18 @@ function attachObject()
         tabletObject = nil
     end
     local model = GetHashKey("prop_cs_tablet")
+    local playerPed = PlayerPedId()
     RequestModel(model)
     while not HasModelLoaded(model) do
         Citizen.Wait(0)
     end
     tabletObject = CreateObject(model, 0, 0, 0, true, true, true)
-    AttachEntityToEntity(tabletObject, GetPlayerPed(-1), GetPedBoneIndex(GetPlayerPed(-1), 57005), 0.17, 0.10, -0.13, 20.0, 180.0, 180.0, true, true, false, true, 1, true)
+    AttachEntityToEntity(tabletObject, playerPed, GetPedBoneIndex(playerPed, 57005), 0.17, 0.10, -0.13, 20.0, 180.0, 180.0, true, true, false, true, 1, true)
     SetModelAsNoLongerNeeded(model)
 end
 
 function stopAnim()
-    StopAnimTask(GetPlayerPed(-1), "amb@world_human_seat_wall_tablet@female@base", "base", 8.0)
+    StopAnimTask(PlayerPedId(), "amb@world_human_seat_wall_tablet@female@base", "base", 8.0)
     if tabletObject ~= nil then
         DeleteEntity(tabletObject)
         tabletObject = nil
@@ -102,7 +104,7 @@ Citizen.CreateThread(
                 Citizen.Wait(0)
             end
             if (tabEnabled) then
-                local ped = GetPlayerPed(-1)
+                local ped = PlayerPedId()
                 DisableControlAction(0, 1, tabEnabled) -- LookLeftRight
                 DisableControlAction(0, 2, tabEnabled) -- LookUpDown
                 DisableControlAction(0, 24, tabEnabled) -- Attack

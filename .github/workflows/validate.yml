@@ -1,0 +1,48 @@
+name: Validate FiveM resource
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: validate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install Lua compiler
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes lua5.4
+
+      - name: Validate resource structure
+        run: |
+          test -s fxmanifest.lua
+          test -s client.lua
+          test -s nui/ui.html
+          grep -q 'fx_version.*cerulean' fxmanifest.lua
+          grep -q 'ui_page.*nui/ui.html' fxmanifest.lua
+
+      - name: Validate Lua syntax
+        run: luac5.4 -p fxmanifest.lua client.lua
+
+      - name: Validate embedded NUI JavaScript
+        run: |
+          node -e 'const fs=require("fs");const html=fs.readFileSync("nui/ui.html","utf8");const start=html.indexOf("<script>")+8;const end=html.indexOf("</script>",start);if(start<8||end<0)throw new Error("Embedded script missing");new Function(html.slice(start,end));'
+
+      - name: Reject legacy NUI dependencies
+        run: |
+          ! grep -R "GetPlayerPed(-1)" client.lua
+          ! grep -R "http://vauntmdt" nui/ui.html
+          ! grep -R "cdnjs.cloudflare.com/ajax/libs/jquery" nui/ui.html

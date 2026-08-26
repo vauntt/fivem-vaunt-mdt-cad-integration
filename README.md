@@ -3,12 +3,19 @@
 [![FiveM](https://img.shields.io/badge/FiveM-NUI%20resource-f40552)](https://fivem.net/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-22c55e.svg)](LICENSE)
 [![VAUNTCORP MDT](https://img.shields.io/badge/VAUNTCORP-MDT%20%2F%20CAD-2563eb)](https://vauntcorp.com/)
+[![Validate FiveM resource](https://github.com/vauntt/fivem-vaunt-mdt-cad-integration/actions/workflows/validate.yml/badge.svg)](https://github.com/vauntt/fivem-vaunt-mdt-cad-integration/actions/workflows/validate.yml)
 
 Ressource FiveM gratuite qui affiche **VAUNTCORP MDT/CAD** dans une tablette NUI en jeu. Elle donne aux services de police, EMS et dispatch un accès rapide au MDT depuis leur serveur GTA RP.
 
 > **English summary:** Free FiveM NUI tablet resource that opens VAUNTCORP MDT/CAD in-game for police, EMS and dispatch workflows on GTA RP servers.
 
 [Découvrir le MDT GTA RP pour FiveM](https://vauntcorp.com/) · [Voir les fonctionnalités MDT/CAD](https://vauntcorp.com/features) · [Ouvrir la démo](https://mdt.vauntcorp.com/) · [Support Discord](https://discord.gg/66khxqRVvd)
+
+<p align="center">
+  <a href="https://vauntcorp.com/">
+    <img src="https://vauntcorp.com/images/posters/hero.webp" alt="Interface VAUNTCORP MDT/CAD pour serveur FiveM GTA RP" width="960">
+  </a>
+</p>
 
 ## Ce que fait cette ressource
 
